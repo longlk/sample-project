@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{F65CBF14-BB31-4350-AD38-22AD9212247E}|Default">
+  <MonoDevelop.Ide.ItemProperties.AdventureWorks__API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AdventureWorks_API/Properties/launchSettings.json">
+    <Files>
+      <File FileName="AdventureWorks_API/Models/AdventureWorksContext.cs" Line="52" Column="53" />
+      <File FileName="AdventureWorks_API/appsettings.json" />
+      <File FileName="AdventureWorks_API/Properties/launchSettings.json" Line="23" Column="29" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="AdventureWorks_API" expanded="True">
+            <Node name="AdventureWorks_API" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
