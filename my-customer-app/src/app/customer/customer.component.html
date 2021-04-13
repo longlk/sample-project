@@ -1,0 +1,35 @@
+<p>Customer List</p>
+<button (click)='getCustomers();'> Get Customer List</button>
+<!-- <div class="example-container mat-elevation-z8"> -->
+
+ <table mat-table [dataSource]="datasource">
+    <!-- Position Column -->
+    <ng-container cdkColumnDef="CustomerId">
+      <mat-header-cell *cdkHeaderCellDef> CustomerId </mat-header-cell>
+      <mat-cell *cdkCellDef="let element"> {{element.customerId}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="title">
+        <mat-header-cell *cdkHeaderCellDef> Title </mat-header-cell>
+        <mat-cell *cdkCellDef="let element"> {{element.title}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="FirstName">
+        <mat-header-cell  *cdkHeaderCellDef> FirstName </mat-header-cell>
+        <mat-cell *cdkCellDef="let element"> {{element.firstName}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="MiddleName">
+        <mat-header-cell *cdkHeaderCellDef> MiddleName </mat-header-cell>
+        <mat-cell *cdkCellDef="let element"> {{element.middleName}} </mat-cell>
+    </ng-container>
+    <ng-container cdkColumnDef="LastName">
+        <mat-header-cell *cdkHeaderCellDef> LastName </mat-header-cell>
+        <mat-cell *cdkCellDef="let element"> {{element.lastName}} </mat-cell>
+    </ng-container>
+    <mat-header-row  *cdkHeaderRowDef="displayedColumns"></mat-header-row >
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+    
+</table>    
+
+<mat-paginator [pageSize]="50" [pageSizeOptions]="[100,150,200]"></mat-paginator>
+
+
+<!-- </div> -->
