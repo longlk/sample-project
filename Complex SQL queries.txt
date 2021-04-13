@@ -1,0 +1,58 @@
+#Complex query 1
+SELECT F.CAT_ID AS CAT_ID, F.categoryID AS categoryID, F.categoryTITLE AS categoryTITLE, F.categoryURL AS categoryURL, F.CAT_IMG AS CAT_IMG, F.PARENT AS PARENT, F.TOTAL AS TOTAL, 
+    SUM(F.TOTAL) AS PARENT_TOTAL, G.TITLE AS PARENT_TITLE, G.IMAGE AS PARENT_IMG, G.ID AS PARENT_ID FROM (
+    SELECT E.CAT_ID AS CAT_ID, E.categoryID AS categoryID, E.categoryTITLE AS categoryTITLE, E.categoryURL AS categoryURL, E.CAT_IMG AS CAT_IMG, E.PARENT AS PARENT, COUNT(*) AS TOTAL FROM (
+        
+    SELECT C.CAT_ID AS CAT_ID, D.ID AS categoryID, D.TITLE AS categoryTITLE, D.FAKE_URL AS categoryURL, D.IMAGE AS CAT_IMG, D.PARENT AS PARENT 
+    FROM products A
+    INNER JOIN product_size B on A.ID=B.PROD_ID 
+    INNER JOIN cat_prod C on B.PROD_ID=C.PROD_ID 
+    INNER JOIN categories D on C.CAT_ID=D.ID 
+    WHERE (
+    A.TITLE LIKE '%modbu%' 
+    or (REPLACE( A.TITLE,  '-',  '' ) LIKE '%modbu%')
+    or A.CAT_DESCR LIKE '%modbu%' 
+    or (REPLACE( A.CAT_DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.DESCR LIKE '%modbu%' 
+    or (REPLACE( A.DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.BIG_DESCR LIKE '%modbu%' 
+    or (REPLACE( A.BIG_DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.KEYWORDS LIKE '%modbu%' 
+    or (REPLACE( A.KEYWORDS,  '-',  '' ) LIKE '%modbu%')
+    or MATCH(A.TITLE, A.KEYWORDS, A.CAT_DESCR, A.DESCR, A.BIG_DESCR) AGAINST ('modbu*' IN BOOLEAN MODE)
+    or MATCH(D.TITLE) AGAINST ('modbu*' IN BOOLEAN MODE)
+    ) AND B.PPRICE >0 AND D.ID <> 196 AND D.ID <> 436 
+    ) AS E GROUP BY E.CAT_ID ORDER BY E.categoryTITLE ASC
+        ) AS F INNER JOIN categories G on F.PARENT = G.ID 
+        WHERE G.PARENT = 0
+        GROUP BY F.PARENT
+        ORDER BY PARENT_TOTAL DESC
+
+#Complex query 2
+SELECT E.ID AS ID, E.P_TITLE as P_TITLE, E.CAT_DESCR AS CAT_DESCR, E.IMAGE AS IMAGE, E.FAKE_URL AS FAKE_URL, E.PPRICE AS PPRICE, E.PRICEID AS PRICEID, E.ADDED AS ADDED, E.categoryID as categoryID, E.categoryTITLE AS categoryTITLE,
+    E.RELEVANCE1 AS RELEVANCE1, E.RELEVANCE2 AS RELEVANCE2, E.RELEVANCE3 AS RELEVANCE3, E.RELEVANCE4 AS RELEVANCE4 FROM (
+    SELECT A.ID AS ID, A.TITLE as P_TITLE, A.CAT_DESCR AS CAT_DESCR, A.DESCR AS DESCR, A.IMAGE AS IMAGE, A.FAKE_URL AS FAKE_URL, A.ADDED AS ADDED,
+    (A.TITLE LIKE '%modbu%' or (REPLACE( A.TITLE,  '-',  '' ) LIKE '%modbu%')) as RELEVANCE1,
+    (MATCH(A.KEYWORDS) AGAINST('modbu*' IN BOOLEAN MODE)) as RELEVANCE2,
+    (MATCH(A.KEYWORDS) AGAINST('feature item' IN BOOLEAN MODE)) as RELEVANCE3,
+    (MATCH(A.CAT_DESCR) AGAINST('modbu*' IN BOOLEAN MODE)) as RELEVANCE4,
+    B.PPRICE AS PPRICE, B.ID AS PRICEID,
+    D.ID as categoryID, D.TITLE AS categoryTITLE 
+    FROM products A
+    INNER JOIN product_size B on A.ID = B.PROD_ID 
+    INNER JOIN cat_prod C on B.PROD_ID = C.PROD_ID 
+    INNER JOIN categories D on C.CAT_ID = D.ID 
+    WHERE (
+    A.TITLE LIKE '%modbu%' 
+    or (REPLACE( A.TITLE,  '-',  '' ) LIKE '%modbu%')
+    or A.CAT_DESCR LIKE '%modbu%' 
+    or (REPLACE( A.CAT_DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.DESCR LIKE '%modbu%' 
+    or (REPLACE( A.DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.BIG_DESCR LIKE '%modbu%' 
+    or (REPLACE( A.BIG_DESCR,  '-',  '' ) LIKE '%modbu%')
+    or A.KEYWORDS LIKE '%modbu%' 
+    or (REPLACE( A.KEYWORDS,  '-',  '' ) LIKE '%modbu%')
+    or MATCH(A.TITLE, A.KEYWORDS, A.CAT_DESCR, A.DESCR, A.BIG_DESCR) AGAINST ('modbu*' IN BOOLEAN MODE)
+    ) AND B.PPRICE >0  
+     ) as E GROUP BY E.ID  ORDER BY (RELEVANCE1+RELEVANCE2+RELEVANCE3+RELEVANCE4) DESC, E.P_TITLE LIMIT 0, 10
